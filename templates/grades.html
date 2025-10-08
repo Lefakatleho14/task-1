@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Grades - School Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Grade Management</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('add_grade') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>Add Grade
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">Select Course</h6>
+            </div>
+            <div class="card-body">
+                <form method="GET">
+                    <div class="mb-3">
+                        <label for="course_id" class="form-label">Course</label>
+                        <select class="form-select" id="course_id" name="course_id" onchange="this.form.submit()">
+                            <option value="">Select a course</option>
+                            {% for course in courses %}
+                            <option value="{{ course.id }}" {% if selected_course == course.id|string %}selected{% endif %}>
+                                {{ course.course_name }} ({{ course.course_code }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        {% if students %}
+        <div class="card shadow">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    Students in Selected Course
+                    <span class="badge bg-primary ms-2">{{ students|length }} students</span>
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Class</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ student.student_id }}</td>
+                                <td>{{ student.first_name }} {{ student.last_name }}</td>
+                                <td>{{ student.email }}</td>
+                                <td>{{ student.class_ref.class_name if student.class_ref else 'N/A' }}</td>
+                                <td>
+                                    <a href="{{ url_for('add_grade') }}?student_id={{ student.id }}&course_id={{ selected_course }}" 
+                                       class="btn btn-sm btn-primary">
+                                        <i class="fas fa-plus me-1"></i>Add Grade
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card shadow">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">Select a course to view students</h5>
+                <p class="text-muted">Choose a course from the dropdown to manage grades</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Recent Grades Table -->
+<div class="card shadow mt-4">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">Recent Grades</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Assignment</th>
+                        <th>Grade</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No grades recorded yet</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

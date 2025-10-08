@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Classes - School Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Classes</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('add_class') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>Add Class
+        </a>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Class Name</th>
+                        <th>Grade Level</th>
+                        <th>Room Number</th>
+                        <th>Capacity</th>
+                        <th>Teacher</th>
+                        <th>Students Count</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for class in classes %}
+                    <tr>
+                        <td>{{ class.class_name }}</td>
+                        <td>{{ class.grade_level }}</td>
+                        <td>{{ class.room_number or 'N/A' }}</td>
+                        <td>{{ class.capacity }}</td>
+                        <td>
+                            {% if class.teacher_id %}
+                                {% set teacher = class.teacher %}
+                                {{ teacher.first_name }} {{ teacher.last_name }}
+                            {% else %}
+                                Unassigned
+                            {% endif %}
+                        </td>
+                        <td>{{ class.students|length }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">No classes found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
