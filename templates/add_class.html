@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Add Class - School Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Add New Class</h1>
+    <a href="{{ url_for('classes') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i>Back to Classes
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="class_name" class="form-label">Class Name *</label>
+                            <input type="text" class="form-control" id="class_name" name="class_name" required placeholder="e.g., Grade 10A">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="grade_level" class="form-label">Grade Level *</label>
+                            <input type="number" class="form-control" id="grade_level" name="grade_level" required min="1" max="12">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="room_number" class="form-label">Room Number</label>
+                            <input type="text" class="form-control" id="room_number" name="room_number" placeholder="e.g., Room 101">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="capacity" class="form-label">Capacity</label>
+                            <input type="number" class="form-control" id="capacity" name="capacity" min="1" max="50" value="30">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="teacher_id" class="form-label">Class Teacher</label>
+                        <select class="form-select" id="teacher_id" name="teacher_id">
+                            <option value="">Select a teacher</option>
+                            {% for teacher in teachers %}
+                            <option value="{{ teacher.id }}">{{ teacher.first_name }} {{ teacher.last_name }} ({{ teacher.subject or 'No subject' }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('classes') }}" class="btn btn-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Add Class
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

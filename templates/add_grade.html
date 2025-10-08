@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Add Grade - School Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Add New Grade</h1>
+    <a href="{{ url_for('grades') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i>Back to Grades
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="student_id" class="form-label">Student *</label>
+                            <select class="form-select" id="student_id" name="student_id" required>
+                                <option value="">Select a student</option>
+                                {% for student in students %}
+                                <option value="{{ student.id }}" 
+                                        {% if request.args.get('student_id') == student.id|string %}selected{% endif %}>
+                                    {{ student.first_name }} {{ student.last_name }} ({{ student.student_id }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="course_id" class="form-label">Course *</label>
+                            <select class="form-select" id="course_id" name="course_id" required>
+                                <option value="">Select a course</option>
+                                {% for course in courses %}
+                                <option value="{{ course.id }}" 
+                                        {% if request.args.get('course_id') == course.id|string %}selected{% endif %}>
+                                    {{ course.course_name }} ({{ course.course_code }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="assignment_name" class="form-label">Assignment Name *</label>
+                            <input type="text" class="form-control" id="assignment_name" name="assignment_name" required 
+                                   placeholder="e.g., Midterm Exam, Homework 1">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="grade" class="form-label">Grade *</label>
+                            <input type="number" class="form-control" id="grade" name="grade" required 
+                                   min="0" step="0.01" placeholder="85.5">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="max_grade" class="form-label">Max Grade</label>
+                            <input type="number" class="form-control" id="max_grade" name="max_grade" 
+                                   min="1" step="0.01" value="100" placeholder="100">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3" 
+                                  placeholder="Optional notes about the grade"></textarea>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('grades') }}" class="btn btn-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Add Grade
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-calculate percentage
+document.getElementById('grade').addEventListener('input', calculatePercentage);
+document.getElementById('max_grade').addEventListener('input', calculatePercentage);
+
+function calculatePercentage() {
+    const grade = parseFloat(document.getElementById('grade').value) || 0;
+    const maxGrade = parseFloat(document.getElementById('max_grade').value) || 100;
+    const percentage = (grade / maxGrade) * 100;
+    
+    // You could display this percentage somewhere if needed
+    console.log('Percentage:', percentage.toFixed(2) + '%');
+}
+</script>
+{% endblock %}
