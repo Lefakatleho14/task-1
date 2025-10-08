@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Home - School Management System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+        <div class="hero-section">
+            <h1 class="display-4 mb-4">
+                <i class="fas fa-graduation-cap text-primary"></i>
+                School Management System
+            </h1>
+            <p class="lead mb-4">
+                A comprehensive solution for managing students, teachers, classes, and academic records.
+            </p>
+            
+            {% if not current_user.is_authenticated %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-md-2">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            </div>
+            {% else %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg me-md-2">
+                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Student Management</h5>
+                <p class="card-text">Manage student records, enrollment, and academic progress.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <i class="fas fa-chalkboard-teacher fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Teacher Management</h5>
+                <p class="card-text">Handle teacher profiles, assignments, and course management.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <i class="fas fa-calendar-check fa-3x text-warning mb-3"></i>
+                <h5 class="card-title">Attendance Tracking</h5>
+                <p class="card-text">Track and manage student attendance records.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <i class="fas fa-door-open fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Class Management</h5>
+                <p class="card-text">Organize classes, schedules, and classroom assignments.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <i class="fas fa-chart-line fa-3x text-danger mb-3"></i>
+                <h5 class="card-title">Reports & Analytics</h5>
+                <p class="card-text">Generate reports and analyze academic performance.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

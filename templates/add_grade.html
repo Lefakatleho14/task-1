@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Add Grade - School Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-plus text-primary"></i> Add Grade
+    </h1>
+    <a href="{{ url_for('grades') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Grades
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="student_id" class="form-label">Student *</label>
+                            <select class="form-select" id="student_id" name="student_id" required>
+                                <option value="">Select Student</option>
+                                {% for student in students %}
+                                <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }} ({{ student.student_id }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="course_id" class="form-label">Course *</label>
+                            <select class="form-select" id="course_id" name="course_id" required>
+                                <option value="">Select Course</option>
+                                {% for course in courses %}
+                                <option value="{{ course.id }}">{{ course.course_name }} ({{ course.course_code }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="assignment_name" class="form-label">Assignment Name *</label>
+                            <input type="text" class="form-control" id="assignment_name" name="assignment_name" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="grade" class="form-label">Grade *</label>
+                            <input type="number" class="form-control" id="grade" name="grade" step="0.1" min="0" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="max_grade" class="form-label">Max Grade *</label>
+                            <input type="number" class="form-control" id="max_grade" name="max_grade" step="0.1" min="1" value="100" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Additional comments about this grade..."></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('grades') }}" class="btn btn-outline-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Add Grade
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Calculate percentage in real-time
+document.getElementById('grade').addEventListener('input', calculatePercentage);
+document.getElementById('max_grade').addEventListener('input', calculatePercentage);
+
+function calculatePercentage() {
+    const grade = parseFloat(document.getElementById('grade').value) || 0;
+    const maxGrade = parseFloat(document.getElementById('max_grade').value) || 1;
+    const percentage = (grade / maxGrade) * 100;
+    
+    // Update a display element if needed
+    const percentageDisplay = document.getElementById('percentage-display');
+    if (percentageDisplay) {
+        percentageDisplay.textContent = percentage.toFixed(1) + '%';
+    }
+}
+</script>
+{% endblock %}
